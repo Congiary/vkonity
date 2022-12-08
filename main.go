@@ -19,7 +19,7 @@ type config struct {
 	Admins []int
 	Groups []int
 
-	Interval string
+	Period string
 
 	Message string
 }
@@ -44,7 +44,7 @@ func main() {
 	botVK = api.NewVK(conf.MessageToken)
 
 	s := gocron.NewScheduler(time.UTC)
-	_, err = s.Every(conf.Interval).Do(check)
+	_, err = s.Every(conf.Period).Do(check)
 	if err != nil {
 		log.Fatal(err)
 	}
