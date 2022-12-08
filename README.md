@@ -12,12 +12,11 @@ messages.
 # Configuration
 
 Vkonity uses `config.toml` file in the working directory as the config. You can change it by the flag `-config foo.toml`
-.
 
 ```toml
 # Notification chat IDs
 Admins = [
-    1,
+    1, #@durov
 ]
 # Listen group IDs
 Groups = [
@@ -33,7 +32,7 @@ MessageToken = ""
 # Frequency of requests to API VK. Valid time units are "ms", "s", "m", "h".
 Period = "10s"
 # Message template sent to PM
-Message = "🆕 Новый пост в @public%v\n🌎 Быстрый переход: https://vk.com/wall%v_%v\n🖌 Содержание:\n%s"
+Message = "🆕 New post in @public%v\n🌎 Link: https://vk.com/wall%v_%v\n🖌 Content:\n%s"
 ```
 
 # Contributors
