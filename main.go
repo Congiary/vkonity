@@ -26,7 +26,7 @@ type config struct {
 
 var (
 	conf      config
-	counts    [10]int
+	counts    []int
 	serviceVK *api.VK
 	botVK     *api.VK
 )
@@ -56,10 +56,15 @@ func check() {
 	for i, groupId := range conf.Groups {
 		group := get(groupId)
 		count := group.Count
-		previewCount := counts[i]
 
+		if len(counts) < i+1 {
+			counts = append(counts, count)
+			continue
+		}
+
+		previewCount := counts[i]
 		counts[i] = count
-		if previewCount == 0 || count <= previewCount {
+		if count <= previewCount {
 			continue
 		}
 
