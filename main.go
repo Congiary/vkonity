@@ -7,7 +7,7 @@ import (
 	"github.com/SevereCloud/vksdk/v2/api"
 	"github.com/SevereCloud/vksdk/v2/object"
 	"github.com/go-co-op/gocron"
-	"log"
+	log "github.com/inconshreveable/log15"
 	"strings"
 	"time"
 )
@@ -16,7 +16,7 @@ type config struct {
 	ServiceToken string
 	MessageToken string
 
-	Admins []int
+	Admins []uint
 	Groups []int
 
 	Period string
@@ -26,10 +26,12 @@ type config struct {
 
 var (
 	conf      config
-	counts    []int
+	countList []int
 	serviceVK *api.VK
 	botVK     *api.VK
 )
+
+var logger = log.New("service", "vkonity")
 
 func main() {
 	configFile := flag.String("config", "config.toml", "path to the config file")
@@ -37,7 +39,7 @@ func main() {
 
 	var err error
 	if _, err = toml.DecodeFile(*configFile, &conf); err != nil {
-		log.Fatalln(err)
+		panic(err)
 	}
 
 	serviceVK = api.NewVK(conf.ServiceToken)
@@ -46,7 +48,7 @@ func main() {
 	s := gocron.NewScheduler(time.UTC)
 	_, err = s.Every(conf.Period).Do(check)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 	s.StartAsync()
 	s.StartBlocking()
@@ -57,13 +59,14 @@ func check() {
 		group := get(groupId)
 		count := group.Count
 
-		if len(counts) < i+1 {
-			counts = append(counts, count)
+		// If not current group in list
+		if len(countList) < i+1 {
+			countList = append(countList, count)
 			continue
 		}
 
-		previewCount := counts[i]
-		counts[i] = count
+		previewCount := countList[i]
+		countList[i] = count
 		if count <= previewCount {
 			continue
 		}
@@ -113,7 +116,7 @@ func send(text string, attachment string) {
 		"attachment": attachment,
 	})
 	if err != nil {
-		log.Fatal(err)
+		logger.Error("Failed to send message", "admins", conf.Admins, "text", text, "attachment", attachment)
 	}
 }
 
@@ -123,7 +126,7 @@ func get(groupId int) api.WallGetResponse {
 		"owner_id": -groupId,
 	})
 	if err != nil {
-		log.Fatal(err)
+		logger.Error("Failed to get posts", "owner_id", -groupId)
 	}
 
 	return group
