@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="go build vkonity" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+    <module name="vkonity" />
+    <working_directory value="$PROJECT_DIR$" />
+    <go_parameters value="-o ./build/vkonity.exe" />
+    <kind value="PACKAGE" />
+    <package value="vkonity" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$/main.go" />
+    <output_directory value="$PROJECT_DIR$/build" />
+    <method v="2" />
+  </configuration>
+</component>

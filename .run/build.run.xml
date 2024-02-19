@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="build" type="CompoundRunConfigurationType">
+    <toRun name="go build vkonity" type="GoApplicationRunConfiguration" />
+    <toRun name="go build vkonity linux" type="GoApplicationRunConfiguration" />
+    <method v="2" />
+  </configuration>
+</component>
